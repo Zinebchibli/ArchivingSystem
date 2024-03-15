@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class FileListComponent implements OnInit {
   fileNames: string[] = [];
+  searchText: string = '';
 
   constructor(private http: HttpClient) { }
 
@@ -28,5 +29,9 @@ export class FileListComponent implements OnInit {
     );
   }
 
-
+  filterFiles(): string[] {
+    const searchTerm = this.searchText.toLowerCase().trim();
+    return this.fileNames.filter(fileName => fileName.toLowerCase().includes(searchTerm));
+  }
+  
 }

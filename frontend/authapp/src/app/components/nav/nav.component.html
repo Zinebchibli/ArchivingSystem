@@ -11,6 +11,9 @@
           </li>
         </ul>
         <ul class="navbar-nav me-auto mb-2 mb-md-0" *ngIf="authenticated">
+          <li class="nav-item">
+            <a routerLink="/trash" class="nav-link">Trash</a>
+          </li>
             <li class="nav-item">
               <a routerLink="/login" (click)="logout()" class="nav-link">Log Out</a>
             </li>

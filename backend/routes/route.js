@@ -147,36 +147,74 @@ router.get("/files", async (req, res) => {
   client.ftp.verbose = true;
 
   try {
-      await client.access({
-          host: "192.168.10.1",
-          user: "ftpuser",
-          password: "a",
-          secure: false,
+    await client.access({
+      host: "192.168.10.1",
+      user: "ftpuser",
+      password: "a",
+      secure: false,
+    });
+
+    const cookie = req.cookies['jwt'];
+    const claims = jwt.verify(cookie, "secret");
+
+    if (!claims) {
+      return res.status(401).send({
+        message: "Unauthenticated"
       });
+    }
 
-      const cookie = req.cookies['jwt'];
-      const claims = jwt.verify(cookie, "secret");
-      if (!claims) {
-          return res.status(401).send({
-              message: "Unauthenticated"
-          });
-      }
+    const user = await User.findOne({ _id: claims._id });
+    const folder = user.folder;
 
-      const user = await User.findOne({ _id: claims._id });
-      const folder = user.folder; 
-      
-      const files = await client.list("/files/" + folder);
+    const files = await client.list(`/files/${folder}`);
+    
+    const filteredFiles = files.filter(file => file.name !== 'trash');
 
-      res.status(200).json(files);
+    res.status(200).json(filteredFiles);
   } catch (error) {
-      console.error("Error occurred:", error);
-      res.status(500).send("Error occurred while fetching files");
+    console.error("Error occurred:", error);
+    res.status(500).send("Error occurred while fetching files");
   } finally {
-      client.close();
+    client.close();
   }
 });
 
-  
+router.get("/trashfiles", async (req, res) => {
+  const client = new ftp.Client();
+  client.ftp.verbose = true;
+
+  try {
+    await client.access({
+      host: "192.168.10.1",
+      user: "ftpuser",
+      password: "a",
+      secure: false,
+    });
+
+    const cookie = req.cookies['jwt'];
+    const claims = jwt.verify(cookie, "secret");
+
+    if (!claims) {
+      return res.status(401).send({
+        message: "Unauthenticated"
+      });
+    }
+
+    const user = await User.findOne({ _id: claims._id });
+    const folder = user.folder;
+
+    const files = await client.list(`/files/${folder}/trash`);
+    
+    res.status(200).json(files);
+  } catch (error) {
+    console.error("Error occurred:", error);
+    res.status(500).send("Error occurred while fetching files");
+  } finally {
+    client.close();
+  }
+});
+
+
 router.get("/download/:fileName", async (req, res) => {
   const client = new ftp.Client();
   client.ftp.verbose = true;
@@ -204,6 +242,49 @@ router.get("/download/:fileName", async (req, res) => {
   }
 });
 
+router.get("/trash/:fileName", async (req, res) => {
+  const client = new ftp.Client();
+  client.ftp.verbose = true;
+
+  try {
+    await client.access({
+      host: "192.168.10.1",
+      user: "ftpuser",
+      password: "a",
+      secure: false,
+    });
+    
+    const cookie = req.cookies['jwt'];
+    const claims = jwt.verify(cookie, "secret");
+
+    if (!claims) {
+      return res.status(401).send({
+        message: "Unauthenticated"
+      });
+    }
+
+    const user = await User.findOne({ _id: claims._id });
+    const folder = user.folder;
+
+    // Ensure that the user's folder exists
+    await client.ensureDir(`/files/${folder}`);
+
+    // Move the file to the "trash" directory within the user's folder
+    await client.ensureDir(`/files/${folder}/trash`);
+    await client.rename(`/files/${folder}/${req.params.fileName}`, `/files/${folder}/trash/${req.params.fileName}`);
+    
+    res.redirect(req.get('referer'));
+    console.log("File moved to trash successfully");
+  } catch (error) {
+    console.error("Error occurred:", error);
+    res.status(500).send("Error occurred during file move to trash");
+  } finally {
+    client.close();
+  }
+});
+
+
+
 router.get("/delete/:fileName", async (req, res) => {
   const client = new ftp.Client();
   client.ftp.verbose = true;
@@ -228,9 +309,9 @@ router.get("/delete/:fileName", async (req, res) => {
     const user = await User.findOne({ _id: claims._id });
     const folder = user.folder;
 
-  await client.cd("/files/" + folder);
+  await client.cd("/files/" + folder + "/trash");
     await client.remove(req.params.fileName);
-    res.redirect(req.get('referer'));
+    res.redirect("http://localhost:4200/trash");
     console.log("File deleted successfully");
   } catch (error) {
     console.error("Error occurred:", error);

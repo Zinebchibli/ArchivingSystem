@@ -10,6 +10,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FileListComponent } from './components/file-list/file-list.component';
+import { TrashComponent } from './components/trash/trash.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { FileListComponent } from './components/file-list/file-list.component';
     LoginComponent,
     NavComponent,
     RegisterComponent,
-    FileListComponent
+    FileListComponent,
+    TrashComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,7 @@
 <div>
+  <input type="text" [(ngModel)]="searchText" placeholder="Search...">
+  
+<div>
     <div *ngIf="fileNames.length == 0"  style="margin-top: 3rem;">
       <div class="document">
         <i class="fas fa-folder"></i>
@@ -8,7 +11,7 @@
     <h2 *ngIf="fileNames.length > 0" style="margin-top: 1.5rem;">List of Files</h2>
     <table>
       <tbody>
-        <tr *ngFor="let fileName of fileNames">
+        <tr *ngFor="let fileName of filterFiles()">
           <td>{{ fileName }}</td>
           <td>  
             <a [href]="'http://localhost:2000/api/download/' + fileName" download>
@@ -28,7 +31,7 @@
               </button>
             </a>
           </td>          <td>  
-            <a [href]="'http://localhost:2000/api/delete/' + fileName">
+            <a [href]="'http://localhost:2000/api/trash/' + fileName">
               <button class="button">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
