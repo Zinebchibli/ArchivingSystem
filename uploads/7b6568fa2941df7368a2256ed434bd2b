@@ -1,0 +1,53 @@
+TP ZIYATI MEMOIRE:
+
+SGA ( system global area ):
+
+-shared memory area used by oracle to store data
+-shared among all users and processes
+
+
+PGA ( program global area): MANUAL
+
+-memory area dedicated to each individual database session or process. (user)
+-manages data
+
+
+Aggregated PGA: AUTOMATIC:
+
+- set limit
+-limit total memory
+max = 3gb , ( somme of all users less than 3gb ).
+
+
+
+Display variables of these parameters;
+
+show parameter memory_max_target;      
+show parameter memory_target;
+show parameter pga_aggregate_target;
+show parameter sga_target;
+
+
+
+SELECT
+
+   name,value
+
+FROM
+
+ v$parameter
+
+WHERE
+
+   name in
+
+('memory_max_target','memory_target','sga_target','sga_max_size','pga_aggregate_target','pga_aggregate_limit','shared_pool_size','large_pool_size','java_pool_size','db_cache_size','streams_pool_size')
+
+ORDER BY 1;
+
+
+
+
+
+
+

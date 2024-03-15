@@ -1,14 +1,35 @@
-<form [formGroup]="form" (submit)="onSubmit()" class="w-100 mx-auto bg-light p-2">
+<form
+  [formGroup]="form"
+  (submit)="onSubmit()"
+  class="w-100 mx-auto bg-light p-2"
+>
   <h1 class="h3 mb-3 fw-normal">Please register</h1>
 
-  <input formControlName="fullname" class="form-control mb-3" type="text" placeholder="fullname" required/>
+  <input
+    formControlName="fullname"
+    class="form-control mb-3"
+    type="text"
+    placeholder="fullname"
+    required
+  />
 
-  <input formControlName="email" class="form-control mb-3" type="email" placeholder="Email" required/>
+  <input
+    formControlName="email"
+    class="form-control mb-3"
+    type="email"
+    placeholder="Email"
+    required
+  />
 
-  <input formControlName="password" class="form-control mb-3" type="password" placeholder="Password" required/>
+  <input
+    formControlName="password"
+    class="form-control mb-3"
+    type="password"
+    placeholder="Password"
+    required
+  />
 
   <div class="align-items-end">
     <button class="btn btn-lg btn-primary" type="submit">Submit</button>
   </div>
-
 </form>
