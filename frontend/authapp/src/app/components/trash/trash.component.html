@@ -1,21 +1,45 @@
-<div class="container">
-    <h1 class="mb-4">Trashed files</h1>
-<div>
-    <input type="text" [(ngModel)]="searchText" placeholder="Search...">
-  <div>
-      <div *ngIf="fileNames.length == 0"  style="margin-top: 3rem;">
+<section class="dashboard">
+  <div class="container">
+    <div class="container">
+      <input checked="" class="checkbox" type="checkbox" />
+      <div class="mainbox">
+        <div class="iconContainer">
+          <svg
+            viewBox="0 0 512 512"
+            height="1em"
+            xmlns="http://www.w3.org/2000/svg"
+            class="search_icon"
+          >
+            <path
+              d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z"
+            ></path>
+          </svg>
+        </div>
+        <input
+          type="text"
+          class="search_input"
+          [(ngModel)]="searchText"
+          placeholder="Search Files"
+          type="text"
+        />
+      </div>
+    </div>
+    <div>
+      <div *ngIf="fileNames.length == 0" style="margin-top: 3rem">
         <div class="document">
           <i class="fas fa-folder"></i>
         </div>
         <h2>This folder is empty</h2>
       </div>
-      <h2 *ngIf="fileNames.length > 0" style="margin-top: 1.5rem;">List of Files</h2>
+      <h2 *ngIf="fileNames.length > 0" style="margin-top: 1.5rem">
+        List of Files
+      </h2>
       <table>
         <tbody>
           <tr *ngFor="let fileName of filterFiles()">
             <td>{{ fileName }}</td>
-            <td>  
-              <a [href]="'http://localhost:2000/api/restore/' + fileName" >
+            <td>
+              <a [href]="'http://localhost:2000/api/restore/' + fileName">
                 <button class="Btn">
                   <svg
                     class="svgIcon"
@@ -31,7 +55,8 @@
                   <span class="tooltip">Download</span>
                 </button>
               </a>
-            </td>          <td>  
+            </td>
+            <td>
               <a [href]="'http://localhost:2000/api/delete/' + fileName">
                 <button class="button">
                   <svg
@@ -52,7 +77,7 @@
                       </clipPath>
                     </defs>
                   </svg>
-                
+
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -71,12 +96,12 @@
                       </clipPath>
                     </defs>
                   </svg>
-                </button>              
+                </button>
               </a>
             </td>
           </tr>
         </tbody>
       </table>
     </div>
-</div>
-</div>
+  </div>
+</section>

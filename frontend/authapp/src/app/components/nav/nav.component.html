@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
+<!-- <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
     <div class="container-fluid">
       <a routerLink="/" class="navbar-brand">Home</a>
       <div> 
@@ -21,4 +21,51 @@
       </div>
     </div>
   </nav>
-  
+   -->
+<nav>
+  <div class="logo-name">
+    <ul>
+      <li>
+        <span class="logo_name">{{ fullname }}</span>
+      </li>
+      <li>
+        <span class="logo_email">{{ email }}</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="menu-items">
+    <ul class="nav-links">
+      <li>
+        <a routerLink="/">
+          <i class="uil uil-estate"></i>
+          <span class="link-name">Home</span>
+        </a>
+      </li>
+      <li>
+        <a routerLink="/trash">
+          <i class="uil uil-trash"></i>
+          <span class="link-name">Trash</span>
+        </a>
+      </li>
+    </ul>
+
+    <ul class="logout-mode" *ngIf="!authenticated || authenticated">
+      <li>
+        <a routerLink="/login" (click)="logout()">
+          <i class="uil uil-signout"></i>
+          <span class="link-name">Logout</span>
+        </a>
+      </li>
+      <li class="mode">
+        <a href="#">
+          <i class="uil uil-moon"></i>
+          <span class="link-name">Dark Mode</span>
+        </a>
+        <div class="mode-toggle">
+          <span class="switch"></span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>
