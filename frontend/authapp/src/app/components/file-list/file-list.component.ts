@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 @Component({
@@ -8,7 +8,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class FileListComponent implements OnInit {
   fileNames: string[] = [];
-  searchText: string = '';
+  @Input() searchText: string = '';
 
   constructor(private http: HttpClient) { }
 

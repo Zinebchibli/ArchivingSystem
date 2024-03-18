@@ -1,108 +1,135 @@
-@import url('https://cdnjs.cloudflare.com/ajax/libs/fontfont-awesome/6.0.0-beta3/css/all.min.css');
+@import url("https://cdnjs.cloudflare.com/ajax/libs/fontfont-awesome/6.0.0-beta3/css/all.min.css");
 
-body{
-    margin: 0;
-    padding: 0;
-    font-family: sans-serif;
+body {
+  margin: 0;
+  padding: 0;
 }
 .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    height: 100vh;
-  }
-  .file {
-    gap: 1rem;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .file > input[type='file'] {
-    display: none
-  }
-  
-  .file > label {
-    font-size: 1rem;
-    font-weight: 300;
-    cursor: pointer;
-    outline: 0;
-    user-select: none;
-    border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
-    border-style: solid;
-    border-radius: 4px;
-    border-width: 1px;
-    background-color: hsl(0, 0%, 100%);
-    color: hsl(0, 0%, 29%);
-    padding-left: 16px;
-    padding-right: 16px;
-    padding-top: 16px;
-    padding-bottom: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .file > label:hover {
-    border-color: hsl(0, 0%, 21%);
-  }
-  
-  .file > label:active {
-    background-color: hsl(0, 0%, 96%);
-  }
-  
-  .file > label > i {
-    padding-right: 5px;
-  }
-  
-  .button {
-    width: 90px;
-    height: 40px;
-    position: relative;
-    font-family: var(--font);
-    color: #3b82f6;
-    font-weight: 600;
-    background-color: #fff;
-    border: none;
-    overflow: hidden;
-    border-radius: 5px;
-    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-    transition: all ease 100ms;
-  }
-  
-  button:hover {
-    background-color: #cbdcf8;
-  }
-  
-  button:focus {
-    background-color: #cbdcf8;
-  }
-  
-  button::before {
-    content: 'Done ✅';
-    position: absolute;
-    color: #3b82f6;
-    left: 0;
-    top: -14px;
-    right: 0;
-    transition: all ease 300ms;
-    opacity: 0%;
-  }
-  
-  button:focus::before {
-    opacity: 100%;
-    transform: translatey(26px);
-  }
-  
-  .submit {
-    transition: all ease 100ms;
-    opacity: 100%;
-  }
-  
-  button:focus > .submit {
-    opacity: 0%;
-  }
-  
-  
-  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  min-width: 80vw !important;
+}
+.file {
+  gap: 1rem;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.file > input[type="file"] {
+  display: none;
+}
+
+.file > label {
+  font-size: 1rem;
+  font-weight: 300;
+  cursor: pointer;
+  outline: 0;
+  user-select: none;
+  border-color: rgb(216, 216, 216) rgb(209, 209, 209) rgb(186, 186, 186);
+  border-style: solid;
+  border-radius: 4px;
+  border-width: 1px;
+  background-color: hsl(0, 0%, 100%);
+  color: hsl(0, 0%, 29%);
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.file > label:hover {
+  border-color: hsl(0, 0%, 21%);
+}
+
+.file > label:active {
+  background-color: hsl(0, 0%, 96%);
+}
+
+.file > label > i {
+  padding-right: 5px;
+}
+
+.button {
+  width: 90px;
+  height: 40px;
+  position: relative;
+  font-family: var(--font);
+  color: #3b82f6;
+  font-weight: 600;
+  background-color: #fff;
+  border: none;
+  overflow: hidden;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+  transition: all ease 100ms;
+}
+
+button:hover {
+  background-color: #cbdcf8;
+}
+
+button:focus {
+  background-color: #cbdcf8;
+}
+
+button::before {
+  content: "Done ✅";
+  position: absolute;
+  color: #3b82f6;
+  left: 0;
+  top: -14px;
+  right: 0;
+  transition: all ease 300ms;
+  opacity: 0%;
+}
+
+button:focus::before {
+  opacity: 100%;
+  transform: translatey(26px);
+}
+
+.submit {
+  transition: all ease 100ms;
+  opacity: 100%;
+}
+
+button:focus > .submit {
+  opacity: 0%;
+}
+
+	.context-menu { 
+		position: absolute; 
+		text-align: center; 
+		background: lightgray; 
+		border: 1px solid black; 
+	} 
+
+	.context-menu ul { 
+		padding: 0px; 
+		margin: 0px; 
+		min-width: 150px; 
+		list-style: none; 
+	} 
+
+	.context-menu ul li { 
+		padding-bottom: 7px; 
+		padding-top: 7px; 
+		border: 1px solid black; 
+	} 
+
+	.context-menu ul li a { 
+		text-decoration: none; 
+		color: black; 
+	} 
+
+	.context-menu ul li:hover { 
+		background: darkgray; 
+	} 
+

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { Emitters } from '../../emiters/emitters';
 
 @Component({
   selector: 'app-login',
@@ -23,6 +24,27 @@ ngOnInit():void{
     email:"",
     password:""
   })
+  const isAuthenticated = localStorage.getItem('isAuthenticated');
+
+  if (isAuthenticated === 'true') {
+    Emitters.authEmitter.emit(true);
+  } else {
+    Emitters.authEmitter.emit(false);
+  }
+
+  this.http.get('http://localhost:2000/api/user', { withCredentials: true })
+    .subscribe(
+      (res: any) => {
+        localStorage.setItem('isAuthenticated', 'true');
+        Emitters.authEmitter.emit(true);
+        this.router.navigateByUrl('/');
+      },
+      (err) => {
+        localStorage.setItem('isAuthenticated', 'false');
+        Emitters.authEmitter.emit(false);
+        this.router.navigateByUrl('/login');
+      }
+    );
 }
 
 validateEmail(email: string): boolean {

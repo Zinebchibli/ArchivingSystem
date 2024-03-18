@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Emitters } from '../../emiters/emitters';
 import { Router } from '@angular/router';
+import { FileUploadService } from '../../ftp-upload.service';
 
 @Component({
   selector: 'app-trash',
@@ -12,21 +13,30 @@ export class TrashComponent {
   fileNames: string[] = [];
   searchText: string = '';
   
-  constructor(private http: HttpClient,private router:Router) { }
+  constructor(private http: HttpClient,private router:Router,private fileUploadService: FileUploadService) { }
 
     ngOnInit(): void{
-      this.http.get('http://localhost:2000/api/user',{
-        withCredentials:true
-      })
-      .subscribe(
-        (res:any) => {
-          Emitters.authEmitter.emit(true)
-      },
-      (err) => {
-        Emitters.authEmitter.emit(false)
-        this.router.navigate(['/login'])
+      const isAuthenticated = localStorage.getItem('isAuthenticated');
+
+      if (isAuthenticated === 'true') {
+        Emitters.authEmitter.emit(true);
+      } else {
+        Emitters.authEmitter.emit(false);
       }
-      );
+  
+      this.http.get('http://localhost:2000/api/user', { withCredentials: true })
+        .subscribe(
+          (res: any) => {
+            localStorage.setItem('isAuthenticated', 'true');
+            Emitters.authEmitter.emit(true);
+            this.router.navigateByUrl('/trash');
+          },
+          (err) => {
+            localStorage.setItem('isAuthenticated', 'false');
+            Emitters.authEmitter.emit(false);
+            this.router.navigateByUrl('/login');
+          }
+        );
       this.fetchFileNames();
   }
  
@@ -48,5 +58,29 @@ export class TrashComponent {
     return this.fileNames.filter(fileName => fileName.toLowerCase().includes(searchTerm));
   }
   
+  restore(): void {
+    this.http.post<any[]>('http://localhost:2000/api/restoreall', {}, { 
+      withCredentials: true
+    }).subscribe(
+      () => {
+      },
+      error => {
+     }
+    );
+    window.location.href = '/trash';
+  }
+
+  delete(): void {
+    this.http.post<any[]>('http://localhost:2000/api/deleteall', {}, { 
+      withCredentials: true
+    }).subscribe(
+      () => {
+      },
+      error => {
+     }
+    );
+    window.location.href = '/trash';
+  }
+
 }
 

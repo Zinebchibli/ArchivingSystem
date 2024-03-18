@@ -1,6 +1,7 @@
 /* ===== Google Font Import - Poppins ===== */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap");
 * {
+  overflow: hidden;
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -17,7 +18,7 @@ ul {
 :root {
   /* ===== Colors ===== */
   --panel-color: #fff;
-  --dashboard-color :#e8e8e8;
+  --dashboard-color :#ffffff;
   --text-color: #000;
   --black-light-color: #707070;
   --border-color: #e6e5e5;
@@ -38,22 +39,7 @@ ul {
 body {
   min-height: 100vh;
 }
-body.dark {
---secondary-text-color:#ccc ;
-  --primary-color: #3a3b3c;
-  --panel-color: #242526;
-  --dashboard-color: #171718;
-  --btn-color : rgb(255, 255, 255);
-  --icon-color : rgb(0, 0, 0);
-  --text-color: #ccc;
-  --black-light-color: #ccc;
-  --border-color: #4d4c4c;
-  --toggle-color: #fff;
-  --box1-color: #3a3b3c;
-  --box2-color: #3a3b3c;
-  --box3-color: #3a3b3c;
-  --title-icon-color: #ccc;
-}
+
 /* === Custom Scroll Bar CSS === */
 ::-webkit-scrollbar {
   width: 8px;
@@ -103,8 +89,8 @@ table {
   }
 
   .Btn {
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height: 35px;
     border: none;
     border-radius: 50%;
     background-color: var(--btn-color);
@@ -192,8 +178,8 @@ table {
     }
   }
   .button {
-    width: 50px;
-    height: 50px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     background-color: var(--btn-color);
     border: none;
@@ -465,18 +451,16 @@ body.dark .switch:before {
 .button p{
     margin-bottom: 0 !important;
 }
-.dashboard {
+@media (min-width:1000px){
+ .dashboard {
   position: relative;
   left: 250px;
   background-color: var(--dashboard-color);
   min-height: 100vh;
   width: calc(100% - 250px);
   transition: var(--tran-05);
-}
-nav.close ~ .dashboard {
-  left: 73px;
-  width: calc(100% - 73px);
-}
+} 
+
 .dashboard .top {
   position: fixed;
   top: 0;
@@ -490,6 +474,36 @@ nav.close ~ .dashboard {
   transition: var(--tran-05);
   z-index: 10;
 }
+}
+@media (max-width:1000px){
+  .dashboard {
+   position: relative;
+   left: 73px;
+   background-color: var(--dashboard-color);
+   min-height: 100vh;
+   width: calc(100% - 73px);
+   transition: var(--tran-05);
+ } 
+ .dashboard .top {
+  position: fixed;
+  top: 0;
+  left: 73px;
+  display: flex;
+  width: calc(100% - 73px);
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  background-color: var(--panel-color);
+  transition: var(--tran-05);
+  z-index: 10;
+}
+ }
+
+nav.close ~ .dashboard {
+  left: 73px;
+  width: calc(100% - 73px);
+}
+
 nav.close ~ .dashboard .top {
   left: 73px;
   width: calc(100% - 73px);
@@ -531,9 +545,6 @@ nav.close ~ .dashboard .top {
 .top img {
   width: 40px;
   border-radius: 50%;
-}
-.dashboard .dash-content {
-  padding-top: 50px;
 }
 .dash-content .title {
   display: flex;
@@ -615,13 +626,22 @@ nav.close ~ .dashboard .top {
   color: var(--text-color);
 }
 .activity-data .data .data-list {
+  display: flex;
+  margin: auto;
   font-size: 18px;
   font-weight: 400;
   margin-top: 20px;
   white-space: nowrap;
   color: var(--text-color);
 }
-
+.activity-data .data .data-files {
+  display: flex;
+  font-size: 18px;
+  font-weight: 400;
+  margin-top: 20px;
+  white-space: nowrap;
+  color: var(--text-color);
+}
 @media (max-width: 1000px) {
   nav {
     width: 73px;
@@ -629,7 +649,7 @@ nav.close ~ .dashboard .top {
   nav.close {
     width: 250px;
   }
-  nav .logo_name {
+  nav .logo_name , nav .logo_email {
     opacity: 0;
     pointer-events: none;
   }
@@ -678,9 +698,6 @@ nav.close ~ .dashboard .top {
   }
 }
 @media (max-width: 400px) {
-  nav {
-    width: 0px;
-  }
   nav.close {
     width: 73px;
   }

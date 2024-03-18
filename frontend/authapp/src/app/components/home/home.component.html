@@ -1,20 +1,23 @@
 <section class="dashboard">
-  <div class="container">
-    <h1 class="mb-4">{{ message }}</h1>
-    <div class="" style="margin-top: 2rem">
-      <div class="file">
-        <label for="input-file">
-          <i class="fa-solid fa-cloud"></i>
-          {{ selectedFile?.name ? selectedFile?.name : "Select a file" }}
-        </label>
-        <input type="file" (change)="onFileSelected($event)" id="input-file" />
 
-        <button (click)="uploadFile()" class="button">
-          <p class="submit">Upload</p>
-        </button>
+  <div class="top">
+    <div class="search-box">
+        <i class="uil uil-search"></i>
+        <input type="text" [(ngModel)]="searchText" (input)="onSearch()" placeholder="Search here...">
       </div>
-    </div>
+    <div class="file">
+      <label for="input-file">
+        <i class="fa-solid fa-cloud"></i>
+        {{ selectedFile?.name ? selectedFile?.name : "Select a file" }}
+      </label>
+      <input type="file" (change)="onFileSelected($event)" id="input-file" />
 
-    <app-file-list></app-file-list>
+      <button (click)="uploadFile()" class="button">
+        <p class="submit">Upload</p>
+      </button>
+    </div>  
   </div>
+<div class="container">
+  <app-file-list [searchText]="searchText"></app-file-list>
+</div>
 </section>

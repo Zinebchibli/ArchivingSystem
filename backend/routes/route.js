@@ -89,7 +89,7 @@ router.get('/user', async (req,res) => {
         res.send(data);
     }catch(err){
         return res.status(401).send({
-            message:"unauthenticated"
+          message:"unauthenticated"
     })
 }
 })
@@ -266,10 +266,8 @@ router.get("/trash/:fileName", async (req, res) => {
     const user = await User.findOne({ _id: claims._id });
     const folder = user.folder;
 
-    // Ensure that the user's folder exists
     await client.ensureDir(`/files/${folder}`);
 
-    // Move the file to the "trash" directory within the user's folder
     await client.ensureDir(`/files/${folder}/trash`);
     await client.rename(`/files/${folder}/${req.params.fileName}`, `/files/${folder}/trash/${req.params.fileName}`);
     
@@ -313,6 +311,126 @@ router.get("/delete/:fileName", async (req, res) => {
     await client.remove(req.params.fileName);
     res.redirect("http://localhost:4200/trash");
     console.log("File deleted successfully");
+  } catch (error) {
+    console.error("Error occurred:", error);
+    res.status(500).send("Error occurred during file delete");
+  } finally {
+    client.close();
+  }
+});
+
+router.get("/restore/:fileName", async (req, res) => {
+  const client = new ftp.Client();
+  client.ftp.verbose = true;
+
+  try {
+    await client.access({
+      host: "192.168.10.1",
+      user: "ftpuser",
+      password: "a",
+      secure: false,
+    });
+    
+    const cookie = req.cookies['jwt'];
+    const claims = jwt.verify(cookie, "secret");
+
+    if (!claims) {
+      return res.status(401).send({
+        message: "Unauthenticated"
+      });
+    }
+
+    const user = await User.findOne({ _id: claims._id });
+    const folder = user.folder;
+
+    await client.cd("/files/" + folder + "/trash");
+    await client.rename(req.params.fileName, "../" + req.params.fileName); 
+
+    res.redirect("http://localhost:4200/trash");
+    console.log("File restored successfully");
+  } catch (error) {
+    console.error("Error occurred:", error);
+    res.status(500).send("Error occurred during file restore");
+  } finally {
+    client.close();
+  }
+});
+
+router.post("/restoreall", async (req, res) => {
+  const client = new ftp.Client();
+  client.ftp.verbose = true;
+
+  try {
+    await client.access({
+      host: "192.168.10.1",
+      user: "ftpuser",
+      password: "a",
+      secure: false,
+    });
+
+    const cookie = req.cookies['jwt'];
+    const claims = jwt.verify(cookie, "secret");
+
+    if (!claims) {
+      return res.status(401).send({
+        message: "Unauthenticated"
+      });
+    }
+
+    const user = await User.findOne({ _id: claims._id });
+    const folder = user.folder;
+
+    await client.cd(`/files/${folder}/trash`);
+
+    const files = await client.list();
+
+    for (const file of files) {
+      await client.rename(file.name, `../${file.name}`);
+    }
+
+    res.status(200).send("All files restored successfully");
+    console.log("All files restored successfully");
+  } catch (error) {
+    console.error("Error occurred:", error);
+    res.status(500).send("Error occurred during file restore");
+  } finally {
+    client.close();
+  }
+});
+
+router.post("/deleteall", async (req, res) => {
+  const client = new ftp.Client();
+  client.ftp.verbose = true;
+
+  try {
+    await client.access({
+      host: "192.168.10.1",
+      user: "ftpuser",
+      password: "a",
+      secure: false,
+    });
+
+    const cookie = req.cookies['jwt'];
+    const claims = jwt.verify(cookie, "secret");
+
+    if (!claims) {
+      return res.status(401).send({
+        message: "Unauthenticated"
+      });
+    }
+
+    const user = await User.findOne({ _id: claims._id });
+    const folder = user.folder;
+
+    await client.cd(`/files/${folder}/trash`);
+    
+    const files = await client.list();
+    for (const file of files) {
+      await client.remove(file.name);
+    }
+
+    res.status(200).send("All files deleted successfully");
+    console.log("All files deleted successfully");
   } catch (error) {
     console.error("Error occurred:", error);
     res.status(500).send("Error occurred during file delete");
