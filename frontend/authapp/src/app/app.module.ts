@@ -6,7 +6,6 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { NavComponent } from './components/nav/nav.component';
-import { RegisterComponent } from './components/register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { FileListComponent } from './components/file-list/file-list.component';
@@ -18,7 +17,6 @@ import { TrashComponent } from './components/trash/trash.component';
     HomeComponent,
     LoginComponent,
     NavComponent,
-    RegisterComponent,
     FileListComponent,
     TrashComponent
   ],

@@ -15,12 +15,15 @@ export class LoginComponent implements OnInit{
   constructor(
    private FormBuilder:FormBuilder,
    private http:HttpClient,
-   private router:Router){
+   private router:Router,
+   ){
     
    }
-   
+   containerClass: string = 'containerx';
+
 ngOnInit():void{
   this.form=this.FormBuilder.group({
+    fullname:"",
     email:"",
     password:""
   })
@@ -47,13 +50,21 @@ ngOnInit():void{
     );
 }
 
+toggleMode(): void {
+  if (this.containerClass.includes('sign-up-mode')) {
+    this.containerClass = 'containerx'; // Switch to sign-in mode
+  } else {
+    this.containerClass = 'containerx sign-up-mode'; // Switch to sign-up mode
+  }
+}
+
 validateEmail(email: string): boolean {
   const emailRegex: RegExp = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   return emailRegex.test(email);
 }
 
-onSubmit ():void {
+Login ():void {
   let user = this.form.getRawValue()
   console.log(user)
 
@@ -71,5 +82,26 @@ onSubmit ():void {
     })
   }
 }
+
+Register ():void {
+  let user = this.form.getRawValue()
+  console.log(user)
+
+  if(user.fullname == "" || user.email == "" || user.password == ""){
+    Swal.fire("Error","Please enter all the fieds","error")
+  }
+  else if (!this.validateEmail(user.email)){
+    Swal.fire("Error","Invalid Email Format!","error");
+  }else{
+    this.http.post("http://localhost:2000/api/register",user,{
+      withCredentials:true
+    })
+    .subscribe(() => this.router.navigate(['/']),(err) => {
+      Swal.fire("error ",err.error.message,"error")
+
+    })
+  }
+}
+
 }
 
