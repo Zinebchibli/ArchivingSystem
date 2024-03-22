@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { Emitters } from '../../emiters/emitters';
 import { FileUploadService } from '../../ftp-upload.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +15,7 @@ export class HomeComponent implements OnInit {
   selectedFile: File | undefined;
   message: string;
   authenticated = false;
+  uploadProgress: number | undefined; // Variable to hold upload progress
 
   constructor(private http: HttpClient, private fileUploadService: FileUploadService, private router: Router) {}
 
@@ -40,32 +42,49 @@ export class HomeComponent implements OnInit {
         }
       );
   }
-  
 
   onSearch(): void {}
 
   onFileSelected(event: any) {
     this.selectedFile = event.target.files[0] as File;
   }
-
+  
   uploadFile() {
     if (this.selectedFile) {
       const formData = new FormData();
       formData.append('file', this.selectedFile);
 
-      this.fileUploadService.uploadFile(formData)
-        .subscribe(
-          response => {
-            console.log('File uploaded successfully:', response);
-            this.selectedFile = undefined;
-          },
-          error => {
-            console.error('Error uploading file:', error);
+      this.fileUploadService.uploadFile(formData).subscribe(
+        (progress: number) => {
+          console.log(`Upload progress: ${progress}%`);
+          this.uploadProgress = progress; // Update uploadProgress variable
+          if (progress === 100) {
+            Swal.fire({
+              icon: "success",
+              title: "File uploaded successfully!",
+              showConfirmButton: true,
+              timer: 5000
+            });
+            this.uploadProgress = undefined;
           }
-        );
+        },
+        error => {
+          Swal.fire('Error', 'Error uploading file:', 'error');
+          setTimeout(() => {
+            this.uploadProgress = undefined;
+          }, 5000); 
+          console.error('Error uploading file:', error);
+          this.uploadProgress = undefined; // Clear progress on error
+        },
+        () => {
+          console.log('File uploaded successfully');
+          this.selectedFile = undefined;
+          Emitters.fileUploaded.emit();
+          this.uploadProgress = undefined; // Clear progress after upload completes
+        }
+      );
     } else {
       console.error('No file selected.');
     }
-    window.location.reload();
   }
 }

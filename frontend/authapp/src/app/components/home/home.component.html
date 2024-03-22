@@ -1,23 +1,31 @@
 <section class="dashboard">
-
   <div class="top">
     <div class="search-box">
-        <i class="uil uil-search"></i>
-        <input type="text" [(ngModel)]="searchText" (input)="onSearch()" placeholder="Search here...">
-      </div>
-    <div class="file">
+      <i class="uil uil-search"></i>
+      <input
+        type="text"
+        [(ngModel)]="searchText"
+        (input)="onSearch()"
+        placeholder="Search here..."
+      />
+    </div>
+    <div class="file" *ngIf="!uploadProgress">
       <label for="input-file">
         <i class="fa-solid fa-cloud"></i>
         {{ selectedFile?.name ? selectedFile?.name : "Select a file" }}
       </label>
       <input type="file" (change)="onFileSelected($event)" id="input-file" />
-
       <button (click)="uploadFile()" class="button">
         <p class="submit">Upload</p>
       </button>
-    </div>  
+    </div>
+
+    <div *ngIf="uploadProgress !== undefined">
+      <p>File uploading...{{ uploadProgress }}%</p>
+      <progress max="100" [value]="uploadProgress"></progress>
+    </div>
   </div>
-<div class="container">
-  <app-file-list [searchText]="searchText"></app-file-list>
-</div>
+  <div class="container">
+    <app-file-list [searchText]="searchText"></app-file-list>
+  </div>
 </section>

@@ -144,11 +144,11 @@ text-decoration: none;
   font-weight: 600;
   text-decoration: none;
   cursor: pointer;
-  border: 1px solid rgb(255,0,0);
+  border: 1px solid #4481eb;
   border-radius: 25px;
   outline: none;
   overflow: hidden;
-  color: rgb(255,0,0);
+  color: #4481eb;
   transition: color 0.3s 0.1s ease-out;
   text-align: center;
 }
@@ -177,15 +177,15 @@ text-decoration: none;
 
 .navbutton:hover {
   color: #fff;
-  border: 1px solid rgb(255,0,0);
+  border: 1px solid #4481eb;
 }
 
 .navbutton:hover::before {
-  box-shadow: inset 0 0 0 10em rgb(255, 0, 0);
+  box-shadow: inset 0 0 0 10em #4481eb;
 }
 .navbutton svg{
   transition: color 0.3s 0.1s ease-out;
-  fill: red;
+  fill: rgb(7, 7, 7);
 }
 
 .navbutton:hover svg{

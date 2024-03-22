@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { FileUploadService } from '../../ftp-upload.service';
+import { Emitters } from '../../emiters/emitters';
 
 @Component({
   selector: 'app-file-list',
@@ -10,10 +12,13 @@ export class FileListComponent implements OnInit {
   fileNames: string[] = [];
   @Input() searchText: string = '';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private fileUploadService: FileUploadService) { }
 
   ngOnInit(): void {
     this.fetchFileNames();
+    Emitters.fileUploaded.subscribe(() => {
+      this.fetchFileNames();
+    });
   }
  
   fetchFileNames(): void {
@@ -34,4 +39,17 @@ export class FileListComponent implements OnInit {
     return this.fileNames.filter(fileName => fileName.toLowerCase().includes(searchTerm));
   }
   
+  trashFile(fileName: string): void {
+    this.http.post('http://localhost:2000/api/trash', { fileName }, { withCredentials: true })
+      .subscribe(
+        () => {
+          console.log('File trashed successfully');
+          Emitters.fileUploaded.emit();
+        },
+        error => {
+          console.error('Error trashing file:', error);
+        }
+      );
+  }
+
 }
