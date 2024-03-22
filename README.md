@@ -82,11 +82,13 @@ Welcome to our archiving application! This application is designed to assist use
    npm install
    
 4. Launch the frontend application:
+   
    ng serve
 
    
 ## Backend Setup
 1. Navigate to the backend directory of the project in a new terminal.
 2. Execute the following command to start the backend server:
+   
    node server.js
    
